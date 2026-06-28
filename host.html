@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Host Control Panel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="host">
+    <h1>🎛 Host Control Panel</h1>
+    <p>Change team names, update scores, reset the tournament, and manage party info from here.</p>
+
+    <section class="panel">
+      <h2>Team Names</h2>
+      <div id="teamEditor"></div>
+      <button class="big" onclick="saveTeamNames()">Save Team Names</button>
+    </section>
+
+    <section class="panel">
+      <h2>Host Score Adjustments</h2>
+      <div id="scoreEditor"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Party Controls</h2>
+      <label>Now Playing / Music Banner</label>
+      <input id="hostMusicInput" placeholder="Party Playlist" />
+      <button onclick="saveHostMusic()">Save Music Banner</button>
+
+      <label>Current Event</label>
+      <select id="eventSelect" onchange="setEventFromHost(this.value)"></select>
+
+      <button onclick="cycleGrill()">Cycle Grill Status</button>
+      <button class="danger" onclick="resetScores()">Reset Scores Only</button>
+      <button class="danger" onclick="resetTournament()">Reset Entire Tournament</button>
+    </section>
+
+    <section class="panel">
+      <h2>QR Code URLs</h2>
+      <p>Use these URLs to create QR codes. They stay the same after team names change.</p>
+      <div id="qrUrls"></div>
+    </section>
+
+    <a href="index.html">Back to Main Scoreboard</a>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -5,7 +5,7 @@ body {
   background: radial-gradient(circle at top, #183b7a, #050816 60%);
   color: white;
 }
-.app { padding: 24px; min-height: 100vh; }
+.app, .host { padding: 24px; min-height: 100vh; }
 header {
   display: flex;
   justify-content: space-between;
@@ -21,6 +21,7 @@ header p { font-size: 18px; color: #dbe7ff; }
   border: 1px solid rgba(255,255,255,.25);
   border-radius: 20px;
   padding: 20px;
+  margin-bottom: 20px;
   box-shadow: 0 20px 50px rgba(0,0,0,.25);
 }
 .grid {
@@ -71,6 +72,37 @@ button.danger { background: #ef476f; color: white; }
 ul { padding-left: 22px; font-size: 22px; line-height: 1.7; }
 footer { margin-top: 24px; font-size: 16px; }
 a { color: #7bdff2; margin-right: 12px; }
+.host-link { display: block; margin-top: 18px; font-weight: bold; }
+input, select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 0;
+  font-size: 18px;
+  margin: 8px 0 14px;
+}
+label { display: block; font-weight: bold; margin-top: 12px; }
+.editor-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.score-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 70px 70px;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.qr-url {
+  background: rgba(0,0,0,.25);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  word-break: break-all;
+}
 .phone {
   max-width: 520px;
   margin: 0 auto;
@@ -90,4 +122,5 @@ a { color: #7bdff2; margin-right: 12px; }
 @media (max-width: 900px) {
   header, .grid, .match { grid-template-columns: 1fr; display: grid; }
   h1 { font-size: 36px; }
+  .score-row { grid-template-columns: 1fr; }
 }

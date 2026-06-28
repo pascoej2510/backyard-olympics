@@ -1,14 +1,19 @@
 # Backyard Olympics Scoreboard
 
-A simple touchscreen-friendly party scoreboard for 8 teams and 6 backyard games.
+Editable host-control version.
 
-## Public URL after GitHub Pages is enabled
+## Your live URL
 
 https://Pascoej2510.github.io/backyard-olympics
 
-## Files
+## New pages
 
 - index.html — TV / iPad scoreboard
 - captain.html — captain phone scoring page
+- host.html — host control panel for team names, scores, event progress, and QR URLs
 - style.css — design
 - app.js — scoring logic
+
+## Captain QR links
+
+Use captain.html?team=0 through captain.html?team=7. These links stay the same even when you rename teams.

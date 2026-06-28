@@ -30,14 +30,14 @@
         <div class="event-name" id="currentEvent">Cornhole</div>
         <div class="match">
           <div>
-            <span id="teamAName">Red Rockets</span>
-            <button onclick="addScore('Red Rockets', 1)">+1</button>
-            <button onclick="addScore('Red Rockets', 3)">+3</button>
+            <span id="teamAName">Team 1</span>
+            <button onclick="addScore(0, 1)">+1</button>
+            <button onclick="addScore(0, 3)">+3</button>
           </div>
           <div>
-            <span id="teamBName">Blue Bombers</span>
-            <button onclick="addScore('Blue Bombers', 1)">+1</button>
-            <button onclick="addScore('Blue Bombers', 3)">+3</button>
+            <span id="teamBName">Team 2</span>
+            <button onclick="addScore(1, 1)">+1</button>
+            <button onclick="addScore(1, 3)">+3</button>
           </div>
         </div>
         <button class="big" onclick="nextEvent()">Next Event</button>
@@ -50,24 +50,26 @@
 
       <section class="panel">
         <h2>Party Features</h2>
-        <p>🎵 Now Playing: <span id="music">Party Playlist</span></p>
+        <p>🎵 Now Playing: <input id="musicInput" placeholder="Party Playlist" onchange="setMusic(this.value)" /></p>
         <p>⏱ Next Event Countdown: <span id="timer">10:00</span></p>
         <p>🌤 Weather: Perfect Backyard Weather</p>
         <p>🎆 Winner animations: ON</p>
         <button onclick="cycleGrill()">Update Grill Status</button>
+        <a class="host-link" href="host.html">Open Host Control Panel</a>
       </section>
     </main>
 
     <footer>
       Captain Links:
-      <a href="captain.html?team=Red%20Rockets">Red Rockets</a>
-      <a href="captain.html?team=Blue%20Bombers">Blue Bombers</a>
-      <a href="captain.html?team=Green%20Giants">Green Giants</a>
-      <a href="captain.html?team=Gold%20Rush">Gold Rush</a>
-      <a href="captain.html?team=Purple%20Bulls">Purple Bulls</a>
-      <a href="captain.html?team=Orange%20Crush">Orange Crush</a>
-      <a href="captain.html?team=Tidal%20Wave">Tidal Wave</a>
-      <a href="captain.html?team=Blackouts">Blackouts</a>
+      <a href="captain.html?team=0">Team 1</a>
+      <a href="captain.html?team=1">Team 2</a>
+      <a href="captain.html?team=2">Team 3</a>
+      <a href="captain.html?team=3">Team 4</a>
+      <a href="captain.html?team=4">Team 5</a>
+      <a href="captain.html?team=5">Team 6</a>
+      <a href="captain.html?team=6">Team 7</a>
+      <a href="captain.html?team=7">Team 8</a>
+      <a href="host.html">Host</a>
     </footer>
   </div>
 
