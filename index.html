@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backyard Olympics Scoreboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>🏆 Backyard Olympics</h1>
+        <p>8-Team Party Scoreboard • Cornhole • KanJam • Ladder Ball • Bottle Bash • Flip Cup • Beer Pong</p>
+      </div>
+      <div class="party-box">
+        <strong>🍔 Grill Status</strong>
+        <span id="grillStatus">Burgers Ready Soon</span>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="panel leaderboard">
+        <h2>Live Standings</h2>
+        <div id="leaderboard"></div>
+      </section>
+
+      <section class="panel current">
+        <h2>Current Event</h2>
+        <div class="event-name" id="currentEvent">Cornhole</div>
+        <div class="match">
+          <div>
+            <span id="teamAName">Red Rockets</span>
+            <button onclick="addScore('Red Rockets', 1)">+1</button>
+            <button onclick="addScore('Red Rockets', 3)">+3</button>
+          </div>
+          <div>
+            <span id="teamBName">Blue Bombers</span>
+            <button onclick="addScore('Blue Bombers', 1)">+1</button>
+            <button onclick="addScore('Blue Bombers', 3)">+3</button>
+          </div>
+        </div>
+        <button class="big" onclick="nextEvent()">Next Event</button>
+      </section>
+
+      <section class="panel">
+        <h2>Event Schedule</h2>
+        <ul id="schedule"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Party Features</h2>
+        <p>🎵 Now Playing: <span id="music">Party Playlist</span></p>
+        <p>⏱ Next Event Countdown: <span id="timer">10:00</span></p>
+        <p>🌤 Weather: Perfect Backyard Weather</p>
+        <p>🎆 Winner animations: ON</p>
+        <button onclick="cycleGrill()">Update Grill Status</button>
+      </section>
+    </main>
+
+    <footer>
+      Captain Links:
+      <a href="captain.html?team=Red%20Rockets">Red Rockets</a>
+      <a href="captain.html?team=Blue%20Bombers">Blue Bombers</a>
+      <a href="captain.html?team=Green%20Giants">Green Giants</a>
+      <a href="captain.html?team=Gold%20Rush">Gold Rush</a>
+      <a href="captain.html?team=Purple%20Bulls">Purple Bulls</a>
+      <a href="captain.html?team=Orange%20Crush">Orange Crush</a>
+      <a href="captain.html?team=Tidal%20Wave">Tidal Wave</a>
+      <a href="captain.html?team=Blackouts">Blackouts</a>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
