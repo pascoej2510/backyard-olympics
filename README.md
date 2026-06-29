@@ -1,19 +1,25 @@
-# Backyard Olympics Scoreboard
+# Backyard Olympics LIVE v1
 
-Editable host-control version.
+This version upgrades the TV display into a polished broadcast-style scoreboard while keeping the same GitHub Pages setup.
 
-## Your live URL
+## Replace these files in your GitHub repo
 
-https://Pascoej2510.github.io/backyard-olympics
+- index.html
+- host.html
+- captain.html
+- style.css
+- app.js
+- README.md
 
-## New pages
+## Live pages
 
-- index.html — TV / iPad scoreboard
-- captain.html — captain phone scoring page
-- host.html — host control panel for team names, scores, event progress, and QR URLs
-- style.css — design
-- app.js — scoring logic
+TV Display:
+https://pascoej2510.github.io/backyard-olympics/
 
-## Captain QR links
+Host Panel:
+https://pascoej2510.github.io/backyard-olympics/host.html
 
-Use captain.html?team=0 through captain.html?team=7. These links stay the same even when you rename teams.
+Captain pages:
+https://pascoej2510.github.io/backyard-olympics/captain.html?team=0
+through
+https://pascoej2510.github.io/backyard-olympics/captain.html?team=7

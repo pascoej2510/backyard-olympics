@@ -20,64 +20,91 @@ function save() {
   localStorage.setItem("music", music);
 }
 
+function renderAll() {
+  renderLeaderboard();
+  renderSchedule();
+  renderMatch();
+  renderCaptain();
+  renderHost();
+  renderClock();
+}
+
 function renderLeaderboard() {
   const el = document.getElementById("leaderboard");
   if (!el) return;
-  const sorted = teams.map((team, i) => ({team, score: scores[i] || 0, index: i}))
-    .sort((a,b) => b.score - a.score);
+
+  const sorted = teams.map((team, i) => ({ team, score: scores[i] || 0, index: i }))
+    .sort((a, b) => b.score - a.score);
+
   el.innerHTML = sorted.map((item, i) => `
     <div class="team-row">
-      <strong>${i + 1}</strong>
-      <span>${item.team}</span>
-      <strong>${item.score}</strong>
+      <div class="rank">${i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1}</div>
+      <div class="team-name">${item.team}</div>
+      <div class="score-pill">${item.score}</div>
     </div>
   `).join("");
+}
 
-  const teamA = document.getElementById("teamAName");
-  const teamB = document.getElementById("teamBName");
-  if (teamA) teamA.textContent = teams[0];
-  if (teamB) teamB.textContent = teams[1];
+function renderMatch() {
+  const teamAName = document.getElementById("teamAName");
+  const teamBName = document.getElementById("teamBName");
+  const teamAScore = document.getElementById("teamAScore");
+  const teamBScore = document.getElementById("teamBScore");
+
+  if (teamAName) teamAName.textContent = teams[0];
+  if (teamBName) teamBName.textContent = teams[1];
+  if (teamAScore) teamAScore.textContent = scores[0] || 0;
+  if (teamBScore) teamBScore.textContent = scores[1] || 0;
+
+  const musicDisplay = document.getElementById("musicDisplay");
+  if (musicDisplay) musicDisplay.textContent = music;
+
+  const grillStatus = document.getElementById("grillStatus");
+  if (grillStatus) grillStatus.textContent = grillStatuses[grillIndex];
+
+  const currentEvent = document.getElementById("currentEvent");
+  if (currentEvent) currentEvent.textContent = events[eventIndex] || "Champion Ceremony";
+
+  const currentEventSmall = document.getElementById("currentEventSmall");
+  if (currentEventSmall) currentEventSmall.textContent = (events[eventIndex] || "Ceremony").toUpperCase();
+
+  const nextEventName = document.getElementById("nextEventName");
+  if (nextEventName) nextEventName.textContent = events[eventIndex + 1] || "Champion Ceremony";
 }
 
 function renderSchedule() {
   const el = document.getElementById("schedule");
-  if (el) {
-    el.innerHTML = events.map((event, i) => {
-      const icon = i < eventIndex ? "✅" : i === eventIndex ? "🔥" : "⏳";
-      return `<li>${icon} ${event}</li>`;
-    }).join("");
-  }
-  const current = document.getElementById("currentEvent");
-  if (current) current.textContent = events[eventIndex] || "Champion Ceremony";
-  const grill = document.getElementById("grillStatus");
-  if (grill) grill.textContent = grillStatuses[grillIndex];
-  const musicInput = document.getElementById("musicInput");
-  if (musicInput) musicInput.value = music;
+  if (!el) return;
+
+  el.innerHTML = events.map((event, i) => {
+    const status = i < eventIndex ? "Complete" : i === eventIndex ? "Live Now" : "Upcoming";
+    const icon = i < eventIndex ? "✅" : i === eventIndex ? "🔥" : "⏳";
+    return `
+      <div class="schedule-item">
+        <span>${icon} ${event}</span>
+        <strong>${status}</strong>
+      </div>
+    `;
+  }).join("");
 }
 
 function addScore(teamIndex, points) {
   scores[teamIndex] = Math.max(0, (scores[teamIndex] || 0) + points);
   save();
-  renderLeaderboard();
-  renderHost();
+  renderAll();
 }
 
 function nextEvent() {
   eventIndex = Math.min(events.length, eventIndex + 1);
   save();
-  renderSchedule();
-  renderHost();
+  renderAll();
+  showCelebration();
 }
 
 function cycleGrill() {
   grillIndex = (grillIndex + 1) % grillStatuses.length;
   save();
-  renderSchedule();
-}
-
-function setMusic(value) {
-  music = value || "Party Playlist";
-  save();
+  renderAll();
 }
 
 function getCaptainTeamIndex() {
@@ -86,7 +113,6 @@ function getCaptainTeamIndex() {
   const num = Number(raw);
   if (!Number.isNaN(num) && num >= 0 && num <= 7) return num;
 
-  // Backward compatibility with old QR links that used team names.
   const nameIndex = teams.findIndex(t => t === raw);
   return nameIndex >= 0 ? nameIndex : 0;
 }
@@ -95,16 +121,18 @@ function captainAdd(points) {
   const teamIndex = getCaptainTeamIndex();
   scores[teamIndex] = Math.max(0, (scores[teamIndex] || 0) + points);
   save();
-  const captainScore = document.getElementById("captainScore");
-  if (captainScore) captainScore.textContent = scores[teamIndex];
+  renderAll();
 }
 
 function renderCaptain() {
   const teamName = document.getElementById("teamName");
   if (!teamName) return;
+
   const teamIndex = getCaptainTeamIndex();
   teamName.textContent = teams[teamIndex];
-  document.getElementById("captainScore").textContent = scores[teamIndex] || 0;
+
+  const captainScore = document.getElementById("captainScore");
+  if (captainScore) captainScore.textContent = scores[teamIndex] || 0;
 }
 
 function renderHost() {
@@ -114,7 +142,7 @@ function renderHost() {
   teamEditor.innerHTML = teams.map((team, i) => `
     <div class="editor-row">
       <label>Team ${i + 1}</label>
-      <input id="teamInput${i}" value="${team.replaceAll('"', '&quot;')}" />
+      <input id="teamInput${i}" value="${escapeAttr(team)}" />
     </div>
   `).join("");
 
@@ -140,7 +168,6 @@ function renderHost() {
   const qrUrls = document.getElementById("qrUrls");
   qrUrls.innerHTML = `
     <div class="qr-url"><strong>Host:</strong><br>${baseUrl}/host.html</div>
-    <div class="qr-url"><strong>TV Scoreboard:</strong><br>${baseUrl}/index.html</div>
     ${teams.map((team, i) => `<div class="qr-url"><strong>Captain ${i + 1} - ${team}:</strong><br>${baseUrl}/captain.html?team=${i}</div>`).join("")}
   `;
 }
@@ -151,9 +178,7 @@ function saveTeamNames() {
     return input.value.trim() || `Team ${i + 1}`;
   });
   save();
-  renderHost();
-  renderLeaderboard();
-  renderCaptain();
+  renderAll();
   alert("Team names saved.");
 }
 
@@ -161,49 +186,65 @@ function saveHostMusic() {
   const input = document.getElementById("hostMusicInput");
   music = input.value || "Party Playlist";
   save();
-  alert("Music banner saved.");
+  renderAll();
+  alert("Music saved.");
 }
 
 function setEventFromHost(value) {
   eventIndex = Number(value);
   save();
-  renderSchedule();
+  renderAll();
 }
 
 function resetScores() {
   if (!confirm("Reset all scores to zero?")) return;
   scores = Array(8).fill(0);
   save();
-  renderHost();
-  renderLeaderboard();
-  renderCaptain();
+  renderAll();
 }
 
 function resetTournament() {
-  if (!confirm("Reset scores, team names, event progress, music, and grill status?")) return;
+  if (!confirm("Reset everything?")) return;
   teams = defaultTeams;
   scores = Array(8).fill(0);
   eventIndex = 0;
   grillIndex = 0;
   music = "Party Playlist";
   save();
-  renderHost();
-  renderLeaderboard();
-  renderSchedule();
-  renderCaptain();
+  renderAll();
+}
+
+function showCelebration() {
+  const el = document.getElementById("celebration");
+  if (!el) return;
+  el.classList.remove("hidden");
+  setTimeout(() => el.classList.add("hidden"), 2400);
+}
+
+function renderClock() {
+  const el = document.getElementById("clock");
+  if (!el) return;
+  el.textContent = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 }
 
 let seconds = 600;
-setInterval(() => {
-  const timer = document.getElementById("timer");
-  if (!timer) return;
+function renderTimer() {
+  const el = document.getElementById("timer");
+  if (!el) return;
   seconds = Math.max(0, seconds - 1);
   const m = String(Math.floor(seconds / 60)).padStart(2, "0");
   const s = String(seconds % 60).padStart(2, "0");
-  timer.textContent = `${m}:${s}`;
-}, 1000);
+  el.textContent = `${m}:${s}`;
+}
 
-renderLeaderboard();
-renderSchedule();
-renderCaptain();
-renderHost();
+function escapeAttr(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+setInterval(renderClock, 1000);
+setInterval(renderTimer, 1000);
+renderAll();

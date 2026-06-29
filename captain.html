@@ -6,20 +6,27 @@
   <title>Captain Score Entry</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="phone">
-    <h1>🏆 Captain Score Entry</h1>
-    <h2 id="teamName">Team</h2>
-    <p>Submit points for your team. QR links stay the same even when the host renames teams.</p>
+<body class="captain">
+  <div class="captain-shell glass">
+    <div class="section-label">Captain Mode</div>
+    <h1 id="teamName">Team</h1>
+    <p>Tap to submit points for your team.</p>
+
+    <div class="captain-score">
+      <span>Current Score</span>
+      <strong id="captainScore">0</strong>
+      <small>points</small>
+    </div>
+
     <div class="score-buttons">
       <button onclick="captainAdd(1)">+1</button>
       <button onclick="captainAdd(3)">+3</button>
       <button onclick="captainAdd(5)">+5</button>
       <button onclick="captainAdd(10)">+10</button>
     </div>
-    <button class="danger" onclick="captainAdd(-1)">-1</button>
-    <p class="captain-score">Current Team Score: <span id="captainScore">0</span></p>
-    <a href="index.html">View Main Scoreboard</a>
+
+    <button class="danger full" onclick="captainAdd(-1)">Subtract 1</button>
+    <a href="index.html" class="nav-button full-link">View TV Display</a>
   </div>
   <script src="app.js"></script>
 </body>

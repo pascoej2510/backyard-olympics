@@ -6,43 +6,58 @@
   <title>Host Control Panel</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="host">
-    <h1>🎛 Host Control Panel</h1>
-    <p>Change team names, update scores, reset the tournament, and manage party info from here.</p>
+<body class="control">
+  <div class="control-shell">
+    <header class="control-header glass">
+      <div>
+        <div class="section-label">Host Control</div>
+        <h1>🎛 Backyard Olympics LIVE</h1>
+        <p>Rename teams, update scores, control events, and manage the TV display.</p>
+      </div>
+      <a href="index.html" class="nav-button">Open TV Display</a>
+    </header>
 
-    <section class="panel">
-      <h2>Team Names</h2>
-      <div id="teamEditor"></div>
-      <button class="big" onclick="saveTeamNames()">Save Team Names</button>
-    </section>
+    <main class="control-grid">
+      <section class="glass">
+        <div class="section-label">Team Names</div>
+        <div id="teamEditor"></div>
+        <button class="primary" onclick="saveTeamNames()">Save Team Names</button>
+      </section>
 
-    <section class="panel">
-      <h2>Host Score Adjustments</h2>
-      <div id="scoreEditor"></div>
-    </section>
+      <section class="glass">
+        <div class="section-label">Score Control</div>
+        <div id="scoreEditor"></div>
+      </section>
 
-    <section class="panel">
-      <h2>Party Controls</h2>
-      <label>Now Playing / Music Banner</label>
-      <input id="hostMusicInput" placeholder="Party Playlist" />
-      <button onclick="saveHostMusic()">Save Music Banner</button>
+      <section class="glass">
+        <div class="section-label">Event Control</div>
+        <label>Current Event</label>
+        <select id="eventSelect" onchange="setEventFromHost(this.value)"></select>
+        <button onclick="nextEvent()">Next Event + Celebration</button>
+        <button onclick="showCelebration()">Trigger Celebration</button>
+        <button class="danger" onclick="resetScores()">Reset Scores</button>
+        <button class="danger" onclick="resetTournament()">Reset Entire Tournament</button>
+      </section>
 
-      <label>Current Event</label>
-      <select id="eventSelect" onchange="setEventFromHost(this.value)"></select>
+      <section class="glass">
+        <div class="section-label">Party Controls</div>
+        <label>Now Playing</label>
+        <input id="hostMusicInput" placeholder="Party Playlist" />
+        <button onclick="saveHostMusic()">Save Music</button>
+        <button onclick="cycleGrill()">Cycle Grill Status</button>
+      </section>
 
-      <button onclick="cycleGrill()">Cycle Grill Status</button>
-      <button class="danger" onclick="resetScores()">Reset Scores Only</button>
-      <button class="danger" onclick="resetTournament()">Reset Entire Tournament</button>
-    </section>
-
-    <section class="panel">
-      <h2>QR Code URLs</h2>
-      <p>Use these URLs to create QR codes. They stay the same after team names change.</p>
-      <div id="qrUrls"></div>
-    </section>
-
-    <a href="index.html">Back to Main Scoreboard</a>
+      <section class="glass wide">
+        <div class="section-label">Captain QR URLs</div>
+        <p>Use these links in any QR code generator. They stay the same when you change team names.</p>
+        <div id="qrUrls"></div>
+      </section>
+    </main>
+  </div>
+  <div id="celebration" class="celebration hidden">
+    <div>🎆</div>
+    <strong>EVENT COMPLETE</strong>
+    <span>Backyard Olympics LIVE</span>
   </div>
   <script src="app.js"></script>
 </body>

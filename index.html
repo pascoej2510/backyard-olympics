@@ -3,74 +3,107 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Backyard Olympics Scoreboard</title>
+  <title>Backyard Olympics LIVE</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="app">
-    <header>
-      <div>
-        <h1>🏆 Backyard Olympics</h1>
-        <p>8-Team Party Scoreboard • Cornhole • KanJam • Ladder Ball • Bottle Bash • Flip Cup • Beer Pong</p>
+<body class="tv">
+  <div class="stadium-bg"></div>
+  <div class="screen">
+    <header class="broadcast-header">
+      <div class="brand">
+        <div class="live-badge"><span></span> LIVE</div>
+        <h1>🏆 Backyard Olympics <em>LIVE</em></h1>
+        <p>Presented by James’ Backyard • July 4th Championship</p>
       </div>
-      <div class="party-box">
-        <strong>🍔 Grill Status</strong>
-        <span id="grillStatus">Burgers Ready Soon</span>
+      <div class="header-stats">
+        <div><strong id="clock">--:--</strong><span>LOCAL TIME</span></div>
+        <div><strong id="currentEventSmall">CORNHOLE</strong><span>NOW PLAYING</span></div>
       </div>
     </header>
 
-    <main class="grid">
-      <section class="panel leaderboard">
-        <h2>Live Standings</h2>
-        <div id="leaderboard"></div>
-      </section>
+    <main class="broadcast-grid">
+      <section class="main-event glass">
+        <div class="section-label">Featured Match</div>
+        <div class="event-title" id="currentEvent">Cornhole</div>
 
-      <section class="panel current">
-        <h2>Current Event</h2>
-        <div class="event-name" id="currentEvent">Cornhole</div>
-        <div class="match">
-          <div>
-            <span id="teamAName">Team 1</span>
-            <button onclick="addScore(0, 1)">+1</button>
-            <button onclick="addScore(0, 3)">+3</button>
+        <div class="matchup">
+          <div class="match-team left">
+            <div class="team-number">TEAM 1</div>
+            <h2 id="teamAName">Red Rockets</h2>
+            <div class="big-score" id="teamAScore">0</div>
           </div>
-          <div>
-            <span id="teamBName">Team 2</span>
-            <button onclick="addScore(1, 1)">+1</button>
-            <button onclick="addScore(1, 3)">+3</button>
+
+          <div class="vs-stack">
+            <div class="vs">VS</div>
+            <div class="pulse-ring"></div>
+          </div>
+
+          <div class="match-team right">
+            <div class="team-number">TEAM 2</div>
+            <h2 id="teamBName">Blue Bombers</h2>
+            <div class="big-score" id="teamBScore">0</div>
           </div>
         </div>
-        <button class="big" onclick="nextEvent()">Next Event</button>
+
+        <div class="event-strip">
+          <span>🎯 Current Court: Main Yard</span>
+          <span>⏱ Next Event: <b id="nextEventName">KanJam</b></span>
+          <span>🎆 Celebration Mode: Armed</span>
+        </div>
       </section>
 
-      <section class="panel">
-        <h2>Event Schedule</h2>
-        <ul id="schedule"></ul>
+      <aside class="standings glass">
+        <div class="section-label">Overall Standings</div>
+        <div id="leaderboard" class="leaderboard"></div>
+      </aside>
+
+      <section class="party glass">
+        <div class="section-label">Party Center</div>
+        <div class="party-grid">
+          <div class="party-tile">
+            <span>🎵</span>
+            <strong id="musicDisplay">Party Playlist</strong>
+            <small>Now Playing</small>
+          </div>
+          <div class="party-tile">
+            <span>🍔</span>
+            <strong id="grillStatus">Burgers Ready Soon</strong>
+            <small>Grill Status</small>
+          </div>
+          <div class="party-tile">
+            <span>⏱</span>
+            <strong id="timer">10:00</strong>
+            <small>Next Event</small>
+          </div>
+          <div class="party-tile">
+            <span>🌤</span>
+            <strong>Perfect</strong>
+            <small>Backyard Weather</small>
+          </div>
+        </div>
       </section>
 
-      <section class="panel">
-        <h2>Party Features</h2>
-        <p>🎵 Now Playing: <input id="musicInput" placeholder="Party Playlist" onchange="setMusic(this.value)" /></p>
-        <p>⏱ Next Event Countdown: <span id="timer">10:00</span></p>
-        <p>🌤 Weather: Perfect Backyard Weather</p>
-        <p>🎆 Winner animations: ON</p>
-        <button onclick="cycleGrill()">Update Grill Status</button>
-        <a class="host-link" href="host.html">Open Host Control Panel</a>
+      <section class="schedule glass">
+        <div class="section-label">Event Schedule</div>
+        <div id="schedule" class="schedule-list"></div>
       </section>
     </main>
 
-    <footer>
-      Captain Links:
-      <a href="captain.html?team=0">Team 1</a>
-      <a href="captain.html?team=1">Team 2</a>
-      <a href="captain.html?team=2">Team 3</a>
-      <a href="captain.html?team=3">Team 4</a>
-      <a href="captain.html?team=4">Team 5</a>
-      <a href="captain.html?team=5">Team 6</a>
-      <a href="captain.html?team=6">Team 7</a>
-      <a href="captain.html?team=7">Team 8</a>
-      <a href="host.html">Host</a>
+    <footer class="ticker">
+      <div class="ticker-track">
+        <span>🏆 BACKYARD OLYMPICS LIVE</span>
+        <span>Scan your captain QR code to submit scores</span>
+        <span>Beer Pong • Flip Cup • Bottle Bash • Ladder Ball • KanJam • Cornhole</span>
+        <span>Champion ceremony after final event</span>
+        <span>🍔 Grill updates available in Host Panel</span>
+      </div>
     </footer>
+  </div>
+
+  <div id="celebration" class="celebration hidden">
+    <div>🎆</div>
+    <strong>EVENT COMPLETE</strong>
+    <span>Backyard Olympics LIVE</span>
   </div>
 
   <script src="app.js"></script>
