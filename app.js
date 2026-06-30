@@ -12,12 +12,26 @@ if (LIVE) {
 const GAMES = ['Cornhole','Can Jam','Ladder Ball','Bottle Bash','Flip Cup','Beer Pong'];
 const DEFAULT_TEAMS = ['Blue Bombers','Corn Stars','Bottle Bashers','Flip Masters','Red Rockets','Lawn Legends','Pong Kings','Kan Jam Crew'];
 const COLORS = ['#35a7ff','#f7c948','#ff5c6c','#2bd576','#b56cff','#ff9d2e','#00d4c7','#ff72b6'];
-const KEY = 'backyardOlympicsV2';
+const KEY = 'backyardOlympicsV3FullGames';
 
 function makeSchedule(){
+  // Full 8-team round robin: 28 total matches. Games rotate through every yard game.
   let matches=[];
-  let pairs=[[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,3],[1,2],[4,7],[5,6],[0,4],[1,5],[2,6],[3,7],[0,5],[1,4],[2,7],[3,6],[0,6],[1,7],[2,4],[3,5]];
-  pairs.forEach((p,i)=>matches.push({id:'m'+i,round:Math.floor(i/4)+1,game:GAMES[i%GAMES.length],teamA:'t'+p[0],teamB:'t'+p[1],scoreA:null,scoreB:null,complete:false,court:(i%4)+1}));
+  let pairs=[];
+  for(let a=0; a<8; a++){
+    for(let b=a+1; b<8; b++){ pairs.push([a,b]); }
+  }
+  pairs.forEach((p,i)=>matches.push({
+    id:'m'+i,
+    round:Math.floor(i/4)+1,
+    game:GAMES[i%GAMES.length],
+    teamA:'t'+p[0],
+    teamB:'t'+p[1],
+    scoreA:null,
+    scoreB:null,
+    complete:false,
+    court:(i%4)+1
+  }));
   return matches;
 }
 function initialState(){return{eventName:'Backyard Olympics',announcement:'Welcome to the games!',round:1,teams:DEFAULT_TEAMS.map((name,i)=>({id:'t'+i,name,color:COLORS[i],wins:0,losses:0,points:0,scored:0,allowed:0})),matches:makeSchedule(),results:[]}}
@@ -70,7 +84,9 @@ async function submitScore(id){
 function renderAdmin(){
   let teamEdit=state.teams.map(t=>`<div class="formrow"><label>${t.id.toUpperCase()} Team Name</label><input class="input admin-team" data-team="${t.id}" value="${escapeHtml(t.name)}"><span class="tiny">Captain link:</span><div class="copybox"><code>${baseUrl()}?view=captain&team=${t.id}</code></div></div>`).join('');
   let open=currentMatches().map(m=>`<div class="match"><b>${m.game}</b><p>${escapeHtml(team(m.teamA).name)} vs ${escapeHtml(team(m.teamB).name)} • Court ${m.court}</p></div>`).join('');
-  shell(`<div class="wrap">${topNav()}<div class="admin-grid"><div class="card"><h2 class="section-title">Control Center</h2><div class="formrow"><label>Event Name</label><input class="input" id="adminEventName" value="${escapeHtml(state.eventName)}"></div><div class="formrow"><label>Announcement</label><input class="input" id="adminAnnouncement" value="${escapeHtml(state.announcement)}"></div><button class="btn primary" onclick="saveAdminFields()">Save Admin Changes</button> <button class="btn danger" onclick="resetAll()">Reset Tournament</button><p class="tiny">Fields are editable immediately. Type changes, then tap Save Admin Changes.</p></div><div class="card"><h2 class="section-title">Active Matches</h2>${open}</div><div class="card"><h2 class="section-title">Teams + Captain Links</h2>${teamEdit}</div><div class="card"><h2 class="section-title">Finished Results</h2><div class="list">${state.matches.filter(m=>m.complete).map(m=>`<span class="pill">${m.game}: ${escapeHtml(team(m.teamA).name)} ${m.scoreA} - ${m.scoreB} ${escapeHtml(team(m.teamB).name)}</span>`).join('')||'<p class="tiny">No scores yet.</p>'}</div></div></div></div>`)
+  let gameList=GAMES.map(g=>`<span class="pill">${g}</span>`).join('');
+  let scheduleList=state.matches.map(m=>`<span class="pill">R${m.round} • ${m.game} • ${escapeHtml(team(m.teamA).name)} vs ${escapeHtml(team(m.teamB).name)}</span>`).join('');
+  shell(`<div class="wrap">${topNav()}<div class="admin-grid"><div class="card"><h2 class="section-title">Control Center</h2><div class="formrow"><label>Event Name</label><input class="input" id="adminEventName" value="${escapeHtml(state.eventName)}"></div><div class="formrow"><label>Announcement</label><input class="input" id="adminAnnouncement" value="${escapeHtml(state.announcement)}"></div><button class="btn primary" onclick="saveAdminFields()">Save Admin Changes</button> <button class="btn danger" onclick="resetAll()">Reset Tournament</button><p class="tiny">Fields are editable immediately. Type changes, then tap Save Admin Changes.</p></div><div class="card"><h2 class="section-title">Games Included</h2><div class="list">${gameList}</div><p class="tiny">Full schedule has ${state.matches.length} matches. Only the next 4 active matches show on the TV at once.</p></div><div class="card"><h2 class="section-title">Active Matches</h2>${open}</div><div class="card"><h2 class="section-title">Full Schedule</h2><div class="list schedule-list">${scheduleList}</div></div><div class="card"><h2 class="section-title">Teams + Captain Links</h2>${teamEdit}</div><div class="card"><h2 class="section-title">Finished Results</h2><div class="list">${state.matches.filter(m=>m.complete).map(m=>`<span class="pill">${m.game}: ${escapeHtml(team(m.teamA).name)} ${m.scoreA} - ${m.scoreB} ${escapeHtml(team(m.teamB).name)}</span>`).join('')||'<p class="tiny">No scores yet.</p>'}</div></div></div></div>`)
 }
 async function saveAdminFields(){
   let s=load();
