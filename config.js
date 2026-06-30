@@ -1,4 +1,3 @@
-// Optional Firebase live sync config.
-// Leave as-is for single-device demo mode.
-// To enable multiple iPhones + TV live updates, replace these values with your Firebase web app config.
+// Leave this as-is for local/GitHub Pages testing.
+// Later, paste your Firebase config here to enable live syncing across devices.
 window.FIREBASE_CONFIG = null;
