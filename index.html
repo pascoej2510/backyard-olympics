@@ -1,111 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Backyard Olympics LIVE</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Backyard Olympics</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="tv">
-  <div class="stadium-bg"></div>
-  <div class="screen">
-    <header class="broadcast-header">
-      <div class="brand">
-        <div class="live-badge"><span></span> LIVE</div>
-        <h1>🏆 Backyard Olympics <em>LIVE</em></h1>
-        <p>Presented by James’ Backyard • July 4th Championship</p>
-      </div>
-      <div class="header-stats">
-        <div><strong id="clock">--:--</strong><span>LOCAL TIME</span></div>
-        <div><strong id="currentEventSmall">CORNHOLE</strong><span>NOW PLAYING</span></div>
-      </div>
-    </header>
-
-    <main class="broadcast-grid">
-      <section class="main-event glass">
-        <div class="section-label">Featured Match</div>
-        <div class="event-title" id="currentEvent">Cornhole</div>
-
-        <div class="matchup">
-          <div class="match-team left">
-            <div class="team-number">TEAM 1</div>
-            <h2 id="teamAName">Red Rockets</h2>
-            <div class="big-score" id="teamAScore">0</div>
-          </div>
-
-          <div class="vs-stack">
-            <div class="vs">VS</div>
-            <div class="pulse-ring"></div>
-          </div>
-
-          <div class="match-team right">
-            <div class="team-number">TEAM 2</div>
-            <h2 id="teamBName">Blue Bombers</h2>
-            <div class="big-score" id="teamBScore">0</div>
-          </div>
-        </div>
-
-        <div class="event-strip">
-          <span>🎯 Current Court: Main Yard</span>
-          <span>⏱ Next Event: <b id="nextEventName">KanJam</b></span>
-          <span>🎆 Celebration Mode: Armed</span>
-        </div>
-      </section>
-
-      <aside class="standings glass">
-        <div class="section-label">Overall Standings</div>
-        <div id="leaderboard" class="leaderboard"></div>
-      </aside>
-
-      <section class="party glass">
-        <div class="section-label">Party Center</div>
-        <div class="party-grid">
-          <div class="party-tile">
-            <span>🎵</span>
-            <strong id="musicDisplay">Party Playlist</strong>
-            <small>Now Playing</small>
-          </div>
-          <div class="party-tile">
-            <span>🍔</span>
-            <strong id="grillStatus">Burgers Ready Soon</strong>
-            <small>Grill Status</small>
-          </div>
-          <div class="party-tile">
-            <span>⏱</span>
-            <strong id="timer">10:00</strong>
-            <small>Next Event</small>
-          </div>
-          <div class="party-tile">
-            <span>🌤</span>
-            <strong>Perfect</strong>
-            <small>Backyard Weather</small>
-          </div>
-        </div>
-      </section>
-
-      <section class="schedule glass">
-        <div class="section-label">Event Schedule</div>
-        <div id="schedule" class="schedule-list"></div>
-      </section>
-    </main>
-
-    <footer class="ticker">
-      <div class="ticker-track">
-        <span>🏆 BACKYARD OLYMPICS LIVE</span>
-        <span>Scan your captain QR code to submit scores</span>
-        <span>Beer Pong • Flip Cup • Bottle Bash • Ladder Ball • KanJam • Cornhole</span>
-        <span>Champion ceremony after final event</span>
-        <span>🍔 Grill updates available in Host Panel</span>
-      </div>
-    </footer>
-  </div>
-
-  <div id="celebration" class="celebration hidden">
-    <div>🎆</div>
-    <strong>EVENT COMPLETE</strong>
-    <span>Backyard Olympics LIVE</span>
-  </div>
-
+<body>
+  <div id="app"></div>
   <script src="app.js"></script>
 </body>
 </html>
