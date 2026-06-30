@@ -1,3 +1,8 @@
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+const LIVE = !!window.FIREBASE_CONFIG;
+let db=null, dbRef=null;
+if(LIVE){ const fb=initializeApp(window.FIREBASE_CONFIG); db=getDatabase(fb); dbRef=ref(db,'backyardOlympics/main'); }
 const GAMES=['Cornhole','Can Jam','Ladder Ball','Bottle Bash','Flip Cup','Beer Pong'];
 const DEFAULT_TEAMS=['Blue Bombers','Corn Stars','Bottle Bashers','Flip Masters','Red Rockets','Lawn Legends','Pong Kings','Kan Jam Crew'];
 const COLORS=['#35a7ff','#f7c948','#ff5c6c','#2bd576','#b56cff','#ff9d2e','#00d4c7','#ff72b6'];
@@ -5,7 +10,7 @@ const KEY='backyardOlympicsV2';
 function initialState(){return{eventName:'Backyard Olympics',announcement:'Welcome to the games!',round:1,teams:DEFAULT_TEAMS.map((name,i)=>({id:'t'+i,name,color:COLORS[i],wins:0,losses:0,points:0,scored:0,allowed:0})),matches:makeSchedule(),results:[]}}
 function makeSchedule(){let matches=[];let pairs=[[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,3],[1,2],[4,7],[5,6],[0,4],[1,5],[2,6],[3,7],[0,5],[1,4],[2,7],[3,6],[0,6],[1,7],[2,4],[3,5]];pairs.forEach((p,i)=>matches.push({id:'m'+i,round:Math.floor(i/4)+1,game:GAMES[i%GAMES.length],teamA:'t'+p[0],teamB:'t'+p[1],scoreA:null,scoreB:null,complete:false,court:(i%4)+1}));return matches}
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||initialState()}catch(e){return initialState()}}
-function save(s){localStorage.setItem(KEY,JSON.stringify(s));window.dispatchEvent(new Event('storage'))}
+async function save(s){ if(LIVE){ await set(dbRef,s); } else { localStorage.setItem(KEY,JSON.stringify(s));window.dispatchEvent(new Event('storage')); }}
 let state=load();
 function qs(){return new URLSearchParams(location.search)}
 function team(id){return state.teams.find(t=>t.id===id)}
@@ -23,4 +28,15 @@ function renameTeam(id,name){let s=load();s.teams.find(t=>t.id===id).name=name;s
 function setEventName(v){let s=load();s.eventName=v;save(s);render()}
 function setAnnouncement(v){let s=load();s.announcement=v;save(s);render()}
 function resetAll(){if(confirm('Reset all scores and team names?')){save(initialState());render()}}
-window.addEventListener('storage',render);setInterval(render,5000);render();
+if(LIVE){ onValue(dbRef,(snap)=>{ if(snap.exists()){ state=snap.val(); shellRender(); } else { save(initialState()); } }); }
+function shellRender(){let view=qs().get('view')||'tv'; if(view==='captain') return renderCaptain(qs().get('team')||'t0'); if(view==='admin') return renderAdmin(); renderTV()}
+window.addEventListener('storage',render);
+if(!LIVE) setInterval(render,5000);
+render();
+
+// Expose handlers for inline HTML event attributes when app.js runs as an ES module.
+window.submitScore = submitScore;
+window.renameTeam = renameTeam;
+window.setEventName = setEventName;
+window.setAnnouncement = setAnnouncement;
+window.resetAll = resetAll;
